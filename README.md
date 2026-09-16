@@ -2,7 +2,7 @@
 
 Angular ile geliştirilmiş, .NET Core (Clean Architecture + MediatR + EF Core) backend'e bağlanan tam kapsamlı bir blog platformu ön yüzü. Hem yönetim paneli hem de ziyaretçilerin göreceği public blog arayüzünü içerir.
 
-Backend repo: [ZenBlogAPI](https://github.com/UmutCan37/ZenBlogAPI)
+Backend repo: [ZenBlogServer](https://github.com/UmutCan37/ZenBlogServer)
 
 ## Ekran Görüntüleri
 
@@ -44,7 +44,7 @@ npm install
 ng serve
 ```
 
-Uygulama varsayılan olarak `http://localhost:4200` adresinde çalışır. Backend API'nin `https://localhost:7000` adresinde ayakta olması gerekir (bkz. [ZenBlogAPI](https://github.com/UmutCan37/ZenBlogAPI)).
+Uygulama varsayılan olarak `http://localhost:4200` adresinde çalışır. Backend API'nin `https://localhost:7000` adresinde ayakta olması gerekir (bkz. [ZenBlogServer](https://github.com/UmutCan37/ZenBlogServer)).
 
 ## Proje Yapısı
 
