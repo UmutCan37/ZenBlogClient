@@ -1,0 +1,109 @@
+<div class="cat-page">
+  <header class="cat-header">
+    <div>
+      <h1 class="cat-title">Categories</h1>
+      <p class="cat-subtitle">{{ categories?.length || 0 }} category total</p>
+    </div>
+    <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+      <i class="fa fa-plus"></i> New Category
+    </button>
+  </header>
+
+  <div class="cat-card">
+    <table class="cat-table" *ngIf="categories?.length; else emptyState">
+      <thead>
+        <tr>
+          <th class="col-index">#</th>
+          <th>Category Name</th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of categories; let i = index">
+          <td class="col-index">{{ i + 1 }}</td>
+          <td class="cat-name">{{ item.categoryName }}</td>
+          <td class="col-actions">
+            <button class="icon-btn icon-btn--edit" data-bs-toggle="modal" data-bs-target="#editModal" (click)="onSelected(item)" title="Edit">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="icon-btn icon-btn--danger" (click)="delete(item.id)" title="Delete">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <i class="fa fa-folder-open"></i>
+        <p>No categories yet</p>
+        <span>Create your first category to get started</span>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content cat-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel">Create New Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #createForm="ngForm" (ngSubmit)="createCategory(); createForm.resetForm()">
+        <div class="modal-body">
+          <div class="form-field">
+            <label>Category Name</label>
+            <input type="text" class="form-control" name="categoryName" [(ngModel)]="newCategory.categoryName" required>
+            <div *ngIf="errors.length > 0">
+              <div *ngFor="let errorObj of errors">
+                <div *ngFor="let entry of (errorObj | keyvalue)">
+                  <span class="field-error" *ngIf="entry.key === 'CategoryName'">{{ entry.value }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn-primary"><i class="fa fa-save"></i> Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content cat-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Update Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #editForm="ngForm" (ngSubmit)="update()">
+        <div class="modal-body">
+          <div class="form-field">
+            <label>Category Name</label>
+            <input type="text" class="form-control" name="categoryName" [(ngModel)]="editCategory.categoryName" required>
+            <div *ngIf="errors.length > 0">
+              <div *ngFor="let errorObj of errors">
+                <div *ngFor="let entry of (errorObj | keyvalue)">
+                  <span class="field-error" *ngIf="entry.key === 'CategoryName'">{{ entry.value }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="editForm.invalid || !editForm.dirty">
+            <i class="fa fa-edit"></i> Update changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

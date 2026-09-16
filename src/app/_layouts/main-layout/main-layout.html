@@ -1,0 +1,50 @@
+<div class="site">
+  <header class="site-header">
+    <div class="header-inner">
+      <a routerLink="" class="brand">
+        <span class="brand-mark">Z</span>
+        <span class="brand-name">ZenBlog</span>
+      </a>
+
+      <nav class="nav" [class.nav--open]="isMobileMenuOpen">
+        <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+        <a *ngIf="!loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+        <a *ngIf="loggedIn()" routerLink="/admin" class="nav-admin">{{ getFullName() }}</a>
+      </nav>
+
+      <button class="nav-toggle" (click)="toggleMobileMenu()" aria-label="Menu">
+        <i class="fa" [ngClass]="isMobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">Z</span>
+        <span class="brand-name">ZenBlog</span>
+        <p class="footer-tagline">Thoughts on software, technology, and building things that last.</p>
+      </div>
+
+      <div class="footer-social">
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
+        <a href="#"><i class="fa fa-linkedin"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {{ currentYear }} <strong>ZenBlog</strong>. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <a href="#" class="scroll-top" [class.active]="showScrollTop" (click)="scrollToTop($event)">
+    <i class="fa fa-arrow-up"></i>
+  </a>
+</div>

@@ -1,0 +1,67 @@
+<div class="details-page" *ngIf="!loading && blog">
+  <div class="details-layout">
+
+    <!-- Main article -->
+    <article class="article">
+      <div class="article-image" [style.background-image]="'url(' + blog.coverImage + ')'"></div>
+
+      <h1 class="article-title">{{ blog.title }}</h1>
+
+      <div class="article-meta">
+        <span *ngIf="blog.user"><i class="fa fa-user"></i> {{ blog.user?.firstName }} {{ blog.user?.lastName }}</span>
+        <span *ngIf="blog.createdAt"><i class="fa fa-clock-o"></i> {{ blog.createdAt | date }}</span>
+        <span *ngIf="blog.category"><i class="fa fa-folder-o"></i> {{ blog.category?.categoryName }}</span>
+      </div>
+
+      <div class="article-body">
+        <img *ngIf="blog.blogImage" [src]="blog.blogImage" alt="">
+        <p>{{ blog.description }}</p>
+      </div>
+
+      <!-- Comments -->
+      <section class="comments-section">
+        <h3>{{ blog.comments?.length || 0 }} Comments</h3>
+
+        <div class="comment" *ngFor="let item of blog.comments">
+          <div class="comment-avatar">{{ item.firstName?.charAt(0) }}{{ item.lastName?.charAt(0) }}</div>
+          <div class="comment-body">
+            <div class="comment-head">
+              <strong>{{ item.firstName }} {{ item.lastName }}</strong>
+              <span class="comment-date">{{ item.commentDate | date }}</span>
+            </div>
+            <p>{{ item.body }}</p>
+          </div>
+        </div>
+
+        <p class="no-comments" *ngIf="!blog.comments?.length">Be the first to comment.</p>
+      </section>
+
+      <!-- Comment form -->
+      <comment-form></comment-form>
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="widget">
+        <h4>Recent Posts</h4>
+        <a class="recent-post" *ngFor="let item of latestBlogs" [routerLink]="['/blogdetails', item.id]">
+          <div class="recent-post-thumb" [style.background-image]="'url(' + item.coverImage + ')'"></div>
+          <div>
+            <h5>{{ item.title }}</h5>
+            <span *ngIf="item.createdAt">{{ item.createdAt | date }}</span>
+          </div>
+        </a>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<div class="loading-state" *ngIf="loading">
+  <i class="fa fa-spinner fa-spin"></i>
+</div>
+
+<div class="empty-state" *ngIf="!loading && !blog">
+  <i class="fa fa-exclamation-circle"></i>
+  <p>Post not found</p>
+</div>

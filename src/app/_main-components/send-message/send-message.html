@@ -1,0 +1,26 @@
+<form #sendMessageForm="ngForm" (ngSubmit)="sendMessage(); sendMessageForm.resetForm()" class="message-form">
+  <h4>Send a Message</h4>
+
+  <div class="form-row">
+    <div class="form-field">
+      <input type="text" name="name" [(ngModel)]="newMessage.name" placeholder="Your Name" required>
+    </div>
+    <div class="form-field">
+      <input type="email" name="email" [(ngModel)]="newMessage.email" placeholder="Your Email" required>
+    </div>
+  </div>
+
+  <div class="form-field">
+    <input type="text" name="subject" [(ngModel)]="newMessage.subject" placeholder="Subject" required>
+  </div>
+
+  <div class="form-field">
+    <textarea name="messageBody" [(ngModel)]="newMessage.messageBody" rows="6" placeholder="Message" required></textarea>
+  </div>
+
+  <button type="submit" class="btn-primary" [disabled]="sendMessageForm.invalid || submitting">
+    <i class="fa fa-spinner fa-spin" *ngIf="submitting"></i>
+    <span *ngIf="!submitting">Send Message</span>
+    <span *ngIf="submitting">Sending...</span>
+  </button>
+</form>

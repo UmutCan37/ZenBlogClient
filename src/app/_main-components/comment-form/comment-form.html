@@ -1,0 +1,25 @@
+<div class="comment-form-wrap">
+
+  <!-- Logged in: show form -->
+  <form *ngIf="loggedIn" #commentForm="ngForm" (ngSubmit)="createComment(); commentForm.resetForm()" class="comment-form">
+    <h4>Post a Comment</h4>
+    <p class="form-hint">Commenting as <strong>{{ currentUser?.fullName }}</strong></p>
+
+    <div class="form-field">
+      <textarea name="body" [(ngModel)]="newComment.body" rows="4" placeholder="Write your comment..." required></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary" [disabled]="commentForm.invalid || submitting">
+      <i class="fa fa-spinner fa-spin" *ngIf="submitting"></i>
+      <span *ngIf="!submitting">Post Comment</span>
+      <span *ngIf="submitting">Posting...</span>
+    </button>
+  </form>
+
+  <!-- Not logged in: prompt -->
+  <div class="login-prompt" *ngIf="!loggedIn">
+    <i class="fa fa-lock"></i>
+    <p>Please <a routerLink="/login">log in</a> to leave a comment.</p>
+  </div>
+
+</div>

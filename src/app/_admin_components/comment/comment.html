@@ -1,0 +1,104 @@
+<div class="comment-page">
+  <header class="comment-header">
+    <div>
+      <h1 class="comment-title">Comments</h1>
+      <p class="comment-subtitle">{{ comments?.length || 0 }} comment total</p>
+    </div>
+  </header>
+
+  <div class="comment-card">
+    <table class="comment-table" *ngIf="comments?.length; else emptyState">
+      <thead>
+        <tr>
+          <th>Author</th>
+          <th>Blog</th>
+          <th>Comment</th>
+          <th>Date</th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of comments">
+          <td>
+            <div class="author-name">{{ item.firstName }} {{ item.lastName }}</div>
+            <div class="author-email">{{ item.email }}</div>
+          </td>
+          <td>{{ item.blog?.title || blogTitle(item.blogId) }}</td>
+          <td class="comment-body">{{ item.body }}</td>
+          <td class="comment-date">{{ item.commentDate | date:'dd.MM.yyyy' }}</td>
+          <td class="col-actions">
+            <button class="icon-btn icon-btn--edit" data-bs-toggle="modal" data-bs-target="#editCommentModal" (click)="onSelected(item)" title="Edit">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="icon-btn icon-btn--danger" (click)="delete(item.id)" title="Delete">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <i class="fa fa-comment-o"></i>
+        <p>No comments yet</p>
+        <span>Comments left on your blog posts will appear here</span>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content comment-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCommentModalLabel">Edit Comment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #editForm="ngForm" (ngSubmit)="update()">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-field">
+              <label>First Name</label>
+              <input type="text" class="form-control" name="firstName" [(ngModel)]="editComment.firstName" required>
+            </div>
+            <div class="form-field">
+              <label>Last Name</label>
+              <input type="text" class="form-control" name="lastName" [(ngModel)]="editComment.lastName" required>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" class="form-control" name="email" [(ngModel)]="editComment.email" required>
+          </div>
+
+          <div class="form-field">
+            <label>Blog</label>
+            <select class="form-control" name="blogId" [(ngModel)]="editComment.blogId" required>
+              <option *ngFor="let b of blogs" [ngValue]="b.id">{{ b.title }}</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Comment</label>
+            <textarea class="form-control" name="body" rows="4" [(ngModel)]="editComment.body" required></textarea>
+          </div>
+
+          <div *ngIf="errors.length > 0">
+            <div *ngFor="let errorObj of errors">
+              <div *ngFor="let entry of (errorObj | keyvalue)">
+                <span class="field-error">{{ entry.value }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="editForm.invalid"><i class="fa fa-edit"></i> Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

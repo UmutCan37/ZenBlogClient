@@ -1,0 +1,37 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-brand">
+      <span class="brand-mark">Z</span>
+      <span class="brand-name">ZenBlog</span>
+    </div>
+
+    <h1 class="login-title">Welcome back</h1>
+    <p class="login-subtitle">Sign in to manage your blog</p>
+
+    <form #loginForm="ngForm" (ngSubmit)="login()">
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="request.email" required autocomplete="username">
+      </div>
+
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" class="form-control" name="password" [(ngModel)]="request.password" required autocomplete="current-password">
+      </div>
+
+      <div *ngIf="errors.length > 0" class="error-box">
+        <div *ngFor="let errorObj of errors">
+          <div *ngFor="let entry of (errorObj | keyvalue)">
+            <span class="field-error">{{ entry.value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || loading">
+        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+        <span *ngIf="!loading">Sign In</span>
+        <span *ngIf="loading">Signing in...</span>
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="contact-page">
+  <header class="page-header">
+    <h1>Contact</h1>
+    <p>Have a question or want to work together? Reach out.</p>
+  </header>
+
+  <div class="contact-layout">
+
+    <!-- Info cards -->
+    <div class="info-list" *ngIf="!loading">
+      <div class="info-item" *ngFor="let item of contactInfos">
+        <div class="info-row" *ngIf="item.address">
+          <i class="fa fa-map-marker"></i>
+          <div>
+            <h4>Address</h4>
+            <p>{{ item.address }}</p>
+          </div>
+        </div>
+
+        <div class="info-row" *ngIf="item.phone">
+          <i class="fa fa-phone"></i>
+          <div>
+            <h4>Call Us</h4>
+            <p>{{ item.phone }}</p>
+          </div>
+        </div>
+
+        <div class="info-row" *ngIf="item.email">
+          <i class="fa fa-envelope"></i>
+          <div>
+            <h4>Email Us</h4>
+            <p>{{ item.email }}</p>
+          </div>
+        </div>
+
+        <a *ngIf="item.mapUrl" [href]="item.mapUrl" target="_blank" class="map-link">
+          <i class="fa fa-external-link"></i> View on map
+        </a>
+      </div>
+
+      <p class="no-info" *ngIf="!contactInfos.length">Contact details coming soon.</p>
+    </div>
+
+    <!-- Message form -->
+    <send-message></send-message>
+
+  </div>
+</div>

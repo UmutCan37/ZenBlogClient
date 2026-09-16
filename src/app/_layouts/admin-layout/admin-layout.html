@@ -1,0 +1,53 @@
+<main class="admin-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">Z</span>
+      <span class="brand-name">ZenBlog</span>
+    </div>
+
+    <nav class="nav-list">
+      <a routerLink="/admin/category" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-list"></i> Categories
+      </a>
+      <a routerLink="/admin/blog" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-image"></i> Blogs
+      </a>
+      <a routerLink="/admin/comment" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-comment"></i> Comments
+      </a>
+      <a routerLink="/admin/contactinfo" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-phone"></i> Contact Info
+      </a>
+      <a routerLink="/admin/message" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-envelope"></i> Messages
+      </a>
+      <a routerLink="/admin/social" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-linkedin"></i> Social Networks
+      </a>
+    </nav>
+
+    <div class="sidebar-footer dropdown dropup">
+      <a
+        #userMenuToggle
+        href="#"
+        class="user-menu dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        (click)="toggleUserMenu($event)"
+      >
+        <img src="https://github.com/mdo.png" alt="" class="avatar" />
+        <span class="user-name">{{ currentUser?.fullName || 'Admin' }}</span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark shadow">
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><button class="dropdown-item" (click)="logout()">Sign out</button></li>
+      </ul>
+    </div>
+  </aside>
+
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+</main>

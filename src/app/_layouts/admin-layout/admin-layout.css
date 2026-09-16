@@ -1,0 +1,129 @@
+:host {
+  --bg: #F5F6F8;
+  --sidebar: #12181F;
+  --sidebar-hover: #1D252F;
+  --sidebar-text: #9CA6B4;
+  --accent: #14B8A6;
+  --accent-ink: #06110F;
+  --border: #E5E7EB;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.admin-shell {
+  display: flex;
+  height: 100vh;
+  height: -webkit-fill-available;
+  overflow: hidden;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px 24px;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.brand-name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: var(--sidebar-text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+
+.nav-link i {
+  width: 16px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.nav-link:hover {
+  background: var(--sidebar-hover);
+  color: #fff;
+}
+
+.nav-link.active {
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* --- Sidebar footer / user menu --- */
+.sidebar-footer {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  padding-top: 12px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .15s;
+}
+
+.user-menu:hover {
+  background: var(--sidebar-hover);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.user-name {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* --- Content --- */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+}

@@ -1,0 +1,158 @@
+<div class="blog-page">
+  <header class="blog-header">
+    <div>
+      <h1 class="blog-title">Blogs</h1>
+      <p class="blog-subtitle">{{ blogs?.length || 0 }} blog total</p>
+    </div>
+    <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#createBlogModal">
+      <i class="fa fa-plus"></i> New Blog
+    </button>
+  </header>
+
+  <div class="blog-grid" *ngIf="blogs?.length; else emptyState">
+    <div class="blog-card" *ngFor="let item of blogs">
+      <div class="blog-card-image">
+        <img [src]="item.coverImage" alt="" *ngIf="item.coverImage; else noImage">
+        <ng-template #noImage><div class="no-image"><i class="fa fa-image"></i></div></ng-template>
+      </div>
+      <div class="blog-card-body">
+        <span class="blog-category-tag">{{ categoryName(item.categoryId) }}</span>
+        <h3 class="blog-card-title">{{ item.title }}</h3>
+        <p class="blog-card-desc">{{ item.description }}</p>
+      </div>
+      <div class="blog-card-actions">
+        <button class="icon-btn icon-btn--edit" data-bs-toggle="modal" data-bs-target="#editBlogModal" (click)="onSelected(item)" title="Edit">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="icon-btn icon-btn--danger" (click)="delete(item.id)" title="Delete">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="blog-empty">
+      <i class="fa fa-file-text-o"></i>
+      <p>No blogs yet</p>
+      <span>Create your first blog post to get started</span>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createBlogModal" tabindex="-1" aria-labelledby="createBlogModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content blog-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createBlogModalLabel">Create New Blog</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #createForm="ngForm" (ngSubmit)="createBlog(); createForm.resetForm()">
+        <div class="modal-body">
+          <div class="form-field">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" [(ngModel)]="newBlog.title" required>
+          </div>
+
+          <div class="form-field">
+            <label>Category</label>
+            <select class="form-control" name="categoryId" [(ngModel)]="newBlog.categoryId" required>
+              <option [ngValue]="null" disabled selected>Select a category</option>
+              <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.categoryName }}</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Description</label>
+            <textarea class="form-control" name="description" rows="4" [(ngModel)]="newBlog.description" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Cover Image URL</label>
+              <input type="text" class="form-control" name="coverImage" [(ngModel)]="newBlog.coverImage" placeholder="https://...">
+              <img *ngIf="newBlog.coverImage" [src]="newBlog.coverImage" class="file-preview">
+            </div>
+            <div class="form-field">
+              <label>Blog Image URL</label>
+              <input type="text" class="form-control" name="blogImage" [(ngModel)]="newBlog.blogImage" placeholder="https://...">
+              <img *ngIf="newBlog.blogImage" [src]="newBlog.blogImage" class="file-preview">
+            </div>
+          </div>
+
+          <div *ngIf="errors.length > 0">
+            <div *ngFor="let errorObj of errors">
+              <div *ngFor="let entry of (errorObj | keyvalue)">
+                <span class="field-error">{{ entry.value }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn-primary"><i class="fa fa-save"></i> Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editBlogModal" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content blog-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editBlogModalLabel">Update Blog</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form #editForm="ngForm" (ngSubmit)="update()">
+        <div class="modal-body">
+          <div class="form-field">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" [(ngModel)]="editBlog.title" required>
+          </div>
+
+          <div class="form-field">
+            <label>Category</label>
+            <select class="form-control" name="categoryId" [(ngModel)]="editBlog.categoryId" required>
+              <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.categoryName }}</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Description</label>
+            <textarea class="form-control" name="description" rows="4" [(ngModel)]="editBlog.description" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Cover Image URL</label>
+              <input type="text" class="form-control" name="coverImage" [(ngModel)]="editBlog.coverImage" placeholder="https://...">
+              <img *ngIf="editBlog.coverImage" [src]="editBlog.coverImage" class="file-preview">
+            </div>
+            <div class="form-field">
+              <label>Blog Image URL</label>
+              <input type="text" class="form-control" name="blogImage" [(ngModel)]="editBlog.blogImage" placeholder="https://...">
+              <img *ngIf="editBlog.blogImage" [src]="editBlog.blogImage" class="file-preview">
+            </div>
+          </div>
+
+          <div *ngIf="errors.length > 0">
+            <div *ngFor="let errorObj of errors">
+              <div *ngFor="let entry of (errorObj | keyvalue)">
+                <span class="field-error">{{ entry.value }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="editForm.invalid">
+            <i class="fa fa-edit"></i> Update changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

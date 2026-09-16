@@ -1,0 +1,54 @@
+<div class="home-page">
+
+  <!-- Hero / Featured -->
+  <section class="hero" *ngIf="featured">
+    <div class="hero-inner">
+      <div class="hero-image" [style.background-image]="'url(' + featured.coverImage + ')'"></div>
+      <div class="hero-content">
+        <span class="hero-tag" *ngIf="featured.category?.categoryName || categoryName(featured.categoryId)">
+          {{ featured.category?.categoryName || categoryName(featured.categoryId) }}
+        </span>
+        <h1 class="hero-title">
+          <a [routerLink]="['/blogdetails', featured.id]">{{ featured.title }}</a>
+        </h1>
+        <p class="hero-desc">{{ featured.description | slice:0:180 }}...</p>
+        <a [routerLink]="['/blogdetails', featured.id]" class="hero-link">Read article <i class="fa fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="loading">
+    <i class="fa fa-spinner fa-spin"></i>
+  </div>
+
+  <!-- Empty -->
+  <div class="empty-state" *ngIf="!loading && blogs.length === 0">
+    <i class="fa fa-file-text-o"></i>
+    <p>No posts yet</p>
+  </div>
+
+  <!-- Category sections -->
+  <section class="category-section" *ngFor="let cat of categories">
+    <ng-container *ngIf="blogsForCategory(cat.id).length > 0">
+      <div class="section-head">
+        <h2>{{ cat.categoryName }}</h2>
+      </div>
+
+      <div class="post-grid">
+        <a class="post-card" *ngFor="let blog of blogsForCategory(cat.id)" [routerLink]="['/blogdetails', blog.id]">
+          <div class="post-card-image" [style.background-image]="'url(' + blog.coverImage + ')'"></div>
+          <div class="post-card-body">
+            <span class="post-card-tag">{{ cat.categoryName }}</span>
+            <h3>{{ blog.title }}</h3>
+            <p>{{ blog.description | slice:0:100 }}...</p>
+            <div class="post-card-author" *ngIf="blog.user">
+              <span>{{ blog.user?.firstName }} {{ blog.user?.lastName }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </ng-container>
+  </section>
+
+</div>

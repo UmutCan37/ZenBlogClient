@@ -1,0 +1,73 @@
+<div class="msg-page">
+  <header class="msg-header">
+    <div>
+      <h1 class="msg-title">Messages</h1>
+      <p class="msg-subtitle">{{ messages?.length || 0 }} message{{ filter !== 'all' ? ' (' + filter + ')' : '' }}</p>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab" [class.active]="filter === 'all'" (click)="setFilter('all')">All</button>
+      <button class="filter-tab" [class.active]="filter === 'unread'" (click)="setFilter('unread')">Unread</button>
+      <button class="filter-tab" [class.active]="filter === 'read'" (click)="setFilter('read')">Read</button>
+    </div>
+  </header>
+
+  <div class="msg-card">
+    <table class="msg-table" *ngIf="messages?.length; else emptyState">
+      <thead>
+        <tr>
+          <th></th>
+          <th>From</th>
+          <th>Subject</th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of messages" [class.unread-row]="!item.isRead" (click)="viewMessage(item)" data-bs-toggle="modal" data-bs-target="#messageDetailModal">
+          <td class="col-dot">
+            <span class="unread-dot" *ngIf="!item.isRead"></span>
+          </td>
+          <td>
+            <div class="msg-name">{{ item.name }}</div>
+            <div class="msg-email">{{ item.email }}</div>
+          </td>
+          <td class="msg-subject">{{ item.subject }}</td>
+          <td class="col-actions">
+            <button class="icon-btn icon-btn--danger" (click)="delete(item.id); $event.stopPropagation()" title="Delete">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <i class="fa fa-envelope-o"></i>
+        <p>No messages</p>
+        <span>Messages sent through your contact form will appear here</span>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="messageDetailModal" tabindex="-1" aria-labelledby="messageDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content msg-modal" *ngIf="selectedMessage">
+      <div class="modal-header">
+        <h5 class="modal-title" id="messageDetailModalLabel">{{ selectedMessage.subject }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-meta">
+          <div><strong>{{ selectedMessage.name }}</strong></div>
+          <div class="detail-email">{{ selectedMessage.email }}</div>
+        </div>
+        <p class="detail-body">{{ selectedMessage.messageBody }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-ghost" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
