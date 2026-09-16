@@ -1,59 +1,60 @@
-# ZenBlogClient
+# ZenBlog Client
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+Angular ile geliştirilmiş, .NET Core (Clean Architecture + MediatR + EF Core) backend'e bağlanan tam kapsamlı bir blog platformu ön yüzü. Hem yönetim paneli hem de ziyaretçilerin göreceği public blog arayüzünü içerir.
 
-## Development server
+Backend repo: [ZenBlogAPI](https://github.com/UmutCan37/ZenBlogAPI)
 
-To start a local development server, run:
+## Ekran Görüntüleri
+
+
+## Özellikler
+
+### Admin Paneli (`/admin`)
+- **Kategoriler** — CRUD, anlık liste güncelleme
+- **Bloglar** — CRUD, kategori seçimi, kapak/görsel URL yönetimi
+- **Yorumlar** — Listeleme, düzenleme, silme (moderasyon)
+- **İletişim Bilgileri** — Adres/telefon/email/harita linki CRUD
+- **Mesajlar** — Okundu/okunmadı filtreleme, detay görüntüleme, silme
+- **Sosyal Ağlar** — CRUD, Font Awesome ikon önizlemesi
+- JWT tabanlı kimlik doğrulama, route guard ile korunan admin sayfaları
+
+### Public Site
+- **Ana Sayfa** — Öne çıkan yazı (hero) + kategori bazlı blog grid'i
+- **Blog Detay** — Makale içeriği, yorumlar, giriş yapan kullanıcılar için yorum formu
+- **İletişim** — İletişim bilgileri + mesaj gönderme formu
+
+## Teknoloji Yığını
+
+- **Framework:** Angular (standalone olmayan, module-based mimari)
+- **Stil:** Custom CSS (Inter font, tutarlı tasarım sistemi — CSS custom properties ile tema yönetimi)
+- **UI Kütüphaneleri:** Bootstrap (modal, dropdown), Font Awesome (ikonlar), Alertify.js (bildirimler)
+- **Kimlik Doğrulama:** JWT, HTTP Interceptor ile otomatik token ekleme, Route Guard ile sayfa koruması
+- **HTTP:** Angular HttpClient, RxJS
+
+## Mimari Notlar
+
+- **Modüler klasör yapısı:** `_admin_components`, `_main-components`, `_layouts`, `_services`, `_models`, `_guards`, `_interceptors`
+- **Servis katmanı:** Her domain (Category, Blog, Comment, ContactInfo, Message, Social, Auth) için ayrı Angular servisi, backend'deki `Result<T>` sarmalayıcı response formatına uygun tip tanımları
+- **Değişiklik algılama:** Bazı bileşenlerde `ChangeDetectorRef.detectChanges()` ile manuel tetikleme kullanılıyor (HTTP response'larının zone dışında dönmesi durumuna karşı)
+
+## Kurulum
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Uygulama varsayılan olarak `http://localhost:4200` adresinde çalışır. Backend API'nin `https://localhost:7000` adresinde ayakta olması gerekir (bkz. [ZenBlogAPI](https://github.com/UmutCan37/ZenBlogAPI)).
 
-## Code scaffolding
+## Proje Yapısı
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+src/app/
+├── _admin_components/     # Admin panel bileşenleri (category, blog, comment, ...)
+├── _main-components/      # Public site bileşenleri (home, blogdetails, contact-main, ...)
+├── _layouts/               # admin-layout, main-layout (header/footer/sidebar)
+├── _services/               # HTTP servisleri
+├── _models/                 # DTO tip tanımları
+├── _guards/                 # AuthGuard
+└── _interceptors/           # AuthInterceptor (JWT header ekleme)
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
